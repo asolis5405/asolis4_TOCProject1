@@ -4,6 +4,8 @@ import sys
 import csv
 from typing import List
 import copy
+import time
+import matplotlib.pyplot as plt
 
 #Functions
 def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
@@ -54,14 +56,14 @@ def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
 def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
     changed = False #initiate changed variable to check if unit propogation was used
     while True:
-        # unit_clauses = [] #initiate list of unit clauses
-        # for c in clauses:
-        #     if len(c) == 1: unit_clauses.append(c[0])
-        # if not unit_clauses:  #if no unit clauses
-        #     return changed
-        unit_clauses = [c[0] for c in clauses if len(c) == 1]
-        if not unit_clauses:
+        unit_clauses = [] #initiate list of unit clauses
+        for c in clauses:
+            if len(c) == 1: unit_clauses.append(c[0])
+        if not unit_clauses:  #if no unit clauses
             return changed
+        # unit_clauses = [c[0] for c in clauses if len(c) == 1]
+        # if not unit_clauses:
+        #     return changed
         
         changed = True #if unit clauses found
         for unit in unit_clauses:
@@ -85,49 +87,48 @@ def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
     
 
 def pure_literal(clauses: List[List[int]], variables: list) -> bool:
-    # literal_count = {} #keep counts of all literals
-    # changed = False #check if pure literal found
-
-    # #gather counts for all literals
-    # for clause in clauses:
-    #     for literal in clause:
-    #         if literal in literal_count:
-    #             literal_count[literal] += 1
-    #         else:
-    #             literal_count[literal] = 1
-
-
-    # #add all pure literals occuring more than once to a pure_literals set
-    # pure_literals = set()
-    # for literal in literal_count:
-    #     if literal_count[literal] > 1 and -literal not in literal_count:
-    #         pure_literals.add(literal)
-    
-    
-    # #remove clauses containing pure literals
-    # for pure in pure_literals:
-    #     var = abs(pure)
-    #     variables[var - 1] = pure > 0  #assign the pure literal
-    #     clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
-    #     changed = True
-    
-    # return changed
-    literal_count = collections.defaultdict(int)
+    literal_count = {} #keep counts of all literals
+    changed = False #check if pure literal found
+    #gather counts for all literals
     for clause in clauses:
         for literal in clause:
-            literal_count[literal] += 1
+            if literal in literal_count:
+                literal_count[literal] += 1
+            else:
+                literal_count[literal] = 1
+
+
+    #add all pure literals occuring more than once to a pure_literals set
+    pure_literals = set()
+    for literal in literal_count:
+        if literal_count[literal] > 1 and -literal not in literal_count:
+            pure_literals.add(literal)
     
-    pure_literals = set(literal for literal in literal_count if -literal not in literal_count)
-    if not pure_literals:
-        return False
     
+    #remove clauses containing pure literals
     for pure in pure_literals:
         var = abs(pure)
-        value = pure > 0
-        variables[var - 1] = value
-        clauses[:] = [clause for clause in clauses if pure not in clause]
+        variables[var - 1] = pure > 0  #assign the pure literal
+        clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
+        changed = True
     
-    return True
+    return changed
+    # literal_count = collections.defaultdict(int)
+    # for clause in clauses:
+    #     for literal in clause:
+    #         literal_count[literal] += 1
+    
+    # pure_literals = set(literal for literal in literal_count if -literal not in literal_count)
+    # if not pure_literals:
+    #     return False
+    
+    # for pure in pure_literals:
+    #     var = abs(pure)
+    #     value = pure > 0
+    #     variables[var - 1] = value
+    #     clauses[:] = [clause for clause in clauses if pure not in clause]
+    
+    # return True
 
 def reduce_clauses(clauses: List[List[int]], assignment: int) -> List[List[int]]:
     
@@ -143,6 +144,11 @@ def reduce_clauses(clauses: List[List[int]], assignment: int) -> List[List[int]]
 
 #Main
 def main():
+    x_satis = []
+    x_unsatis = []
+    y_satis = []
+    y_unsatis= []
+
 
     file_name = "practice_test.csv"
     with open(file_name, mode ='r')as file:
@@ -152,7 +158,7 @@ def main():
 
         for line in csvFile:
             if line[0] == 'c':
-                problemNum = line[1]
+                problemNum = int(line[1])
                 print(f"Problem:{problemNum}") #print problem number
             elif line[0] == 'p':
                 varNum = int(line[2])
@@ -162,13 +168,35 @@ def main():
                 clauses.append(clause)
                 c += 1
                 if c == int(clauseNum):
-                    #call dpll function
-                    if dpll(clauseNum, varNum, clauses): #if dpll returns true then problem is satisfiable if false then unsatisfiable
-                        print("Satisfiable")
-                    else:
-                        print("Unsatisfiable")
-                    c = 0 #restart clause count and clauses list
+                    # start time and call dpll function
+                    start = time.time()
+                    satisfiable = dpll(clauseNum, varNum, clauses)  
+                    exec_time = time.time() - start
+
+                    #update x and y values
+                    if satisfiable:
+                        x_satis.append(clauseNum * 2)#number of literals
+                        y_satis.append(exec_time)
+                    if not satisfiable:
+                        x_unsatis.append(clauseNum * 2)
+                        y_unsatis.append(exec_time)
+
+                    print("Satisfiable" if satisfiable else "Unsatisfiable")
+
+                    c = 0  #restart clause count and clauses list
                     clauses = []
+                    
+
+    # for x in x_satis:
+    #     print(x)
+    # for y in y_satis:
+    #     print(y)
+    # for x in x_unsatis:
+    #     print(x)
+    # for y in y_unsatis:
+    #     print(y)
+    
+    
                 
 if __name__ == '__main__':
     main()
