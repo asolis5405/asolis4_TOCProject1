@@ -15,6 +15,8 @@ def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
         #if clauses_copy is empty then problem is satisfiable since all clauses have been satisfied
         if not clauses_copy:
             return True
+        # if all(len(clause) == 0 for clause in clauses_copy):
+        #     return True
 
         
         if any(len(clause) == 0 for clause in clauses_copy): #if clause length == 0 then we must backtrack since it means the clause could not be satisfied
