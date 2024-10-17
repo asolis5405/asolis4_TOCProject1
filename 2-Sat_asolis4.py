@@ -2,94 +2,88 @@
 import collections
 import sys
 import csv
-from typing import List, Dict
+from typing import List
+import copy
 
 #Functions
 def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
     variables = [None for _ in range(v)] #initiate variables to all be null
-    decision_stack = []  # Stack to hold decisions and backtrack
+    decision_stack = [] #initiate stack to backtrack
+    clauses_copy = copy.deepcopy(clauses)  #create a copy of clauses to avoid modifying original (for backtracking)
 
-    # Repeat until we either satisfy the problem or determine it's unsatisfiable
     while True:
-        # First try unit propagation
-        unit_result = unit_clause_prop(clauses, variables)
-        
-        if not unit_result:
-            # If unit propagation fails, try pure literal elimination
-            pure_result = pure_literal(clauses, variables)
-            
-            if not pure_result:
-                # If both unit propagation and pure literal fail, we backtrack
-                while decision_stack:
-                    print("entered dicision stack loop!")
-                    last_decision, last_value = decision_stack.pop()
-                    if last_value:  # If True failed, now try False
-                        decision_stack.append((last_decision, False))
-                        variables[last_decision - 1] = False
-                        clauses = reduce_clauses(clauses, -last_decision)  # Reverse decision
-                        break
-                    else:
-                        variables[last_decision - 1] = None  # Backtrack further
-                if not decision_stack:
-                    return False  # If no more decisions, the problem is unsatisfiable
-
-        else:
-            # If unit propagation succeeds, move to pure literal elimination
-            pure_literal(clauses, variables)
-
-        # If all clauses are satisfied, return True
-        if not clauses:
+        #if clauses_copy is empty then problem is satisfiable since all clauses have been satisfied
+        if not clauses_copy:
             return True
 
-        # Find an unassigned variable to make a decision
-        var_to_assign = next((i + 1 for i in range(v) if variables[i] is None), None)
-        if var_to_assign is None:
-            break  # No unassigned variables left
+        
+        if any(len(clause) == 0 for clause in clauses_copy): #if clause length == 0 then we must backtrack since it means the clause could not be satisfied
+            while decision_stack: #will continue as long as there are decisions left
+                last_decision, last_value = decision_stack.pop() #returns most recent decision from the stack and saves to corresponding variables
+                if last_value:  #if last value assigned was true then try assigning false
+                    decision_stack.append((last_decision, False))
+                    variables[last_decision - 1] = False
+                    clauses_copy = reduce_clauses(clauses, -last_decision) #reduce clauses again with new truth assignment
+                    break
+                else:
+                    #if false also fails continue backtracking
+                    variables[last_decision - 1] = None
+            if not decision_stack:
+                return False  #if decision stack is empty the problem is unsatisfiable
+            continue 
 
-        # Make a decision: try True first
-        decision_stack.append((var_to_assign, True))
-        variables[var_to_assign - 1] = True
-
-        clauses = reduce_clauses(clauses, var_to_assign)
+        #call unit propogation function
+        unit_result = unit_clause_prop(clauses_copy, variables)
+        if not unit_result:
+            #call pure literal elimination if unit propagation returns false
+            pure_result = pure_literal(clauses_copy, variables)
+            if not pure_result:
+                #if both unit prop and pure literal elimination fail assign variable with value
+                var_to_assign = next((i + 1 for i in range(v) if variables[i] is None), None)
+                if var_to_assign is None: #if no unassigned variables left return false since unsatisfiable
+                    return False  
+                decision_stack.append((var_to_assign, True))#assign variable with true
+                variables[var_to_assign - 1] = True
+                clauses_copy = reduce_clauses(clauses_copy, var_to_assign)#reduce clauses with new truth assignment
 
 
     
 
 def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
-    changed = False
+    changed = False #initiate changed variable to check if unit propogation was used
     while True:
-
-        unit_clauses = []
+        unit_clauses = [] #initiate list of unit clauses
         for c in clauses:
             if len(c) == 1: unit_clauses.append(c[0])
-        if not unit_clauses: 
+        if not unit_clauses:  #if no unit clauses
             return changed
         
-        changed = True
+        changed = True #if unit clauses found
         for unit in unit_clauses:
             var = abs(unit)
-            if unit > 0:
+            if unit > 0: #if value is positive assign true, else assign false
                 value = True
             else:
                 value = False
-            if variables[var - 1] is not None and variables[var - 1] != value:
+
+            if variables[var - 1] is not None and variables[var - 1] != value: #check if variable has already been assigned and if assigned value contradicts current value
                 return False #conflict
             
-            variables[var-1] = value
+            variables[var-1] = value #if no conflict, assign it value
 
-            for clause in clauses:
+            for clause in clauses: #if unit value in clause delete entire clause
                 if unit in clause:
                     clauses.remove(clause)
-            for clause in clauses:
+            for clause in clauses: #if negated unit value in clause delete value from clause
                 if -unit in clause:
                     clause.remove(-unit)
     
 
 def pure_literal(clauses: List[List[int]], variables: list) -> bool:
-    literal_count = {}
-    changed = False
+    literal_count = {} #keep counts of all literals
+    changed = False #check if pure literal found
 
-    # Step 1: Count occurrences of each literal
+    #gather counts for all literals
     for clause in clauses:
         for literal in clause:
             if literal in literal_count:
@@ -98,39 +92,33 @@ def pure_literal(clauses: List[List[int]], variables: list) -> bool:
                 literal_count[literal] = 1
 
 
-    # Step 2: Identify pure literals that appear more than once
+    #add all pure literals occuring more than once to a pure_literals set
     pure_literals = set()
     for literal in literal_count:
-        if literal_count[literal] > 1 and -literal not in literal_count: #MAYBE CHECK THIS
+        if literal_count[literal] > 1 and -literal not in literal_count:
             pure_literals.add(literal)
     
     
-    # Step 3: Remove clauses containing pure literals
+    #remove clauses containing pure literals
     for pure in pure_literals:
         var = abs(pure)
-        variables[var - 1] = pure > 0  # Assign the pure literal
-        clauses[:] = [clause for clause in clauses if pure not in clause]
+        variables[var - 1] = pure > 0  #assign the pure literal
+        clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
         changed = True
     
     return changed
 
 def reduce_clauses(clauses: List[List[int]], assignment: int) -> List[List[int]]:
-    """
-    Reduce clauses based on the assignment of a variable.
-    assignment > 0 means the variable is assigned True
-    assignment < 0 means the variable is assigned False
-    """
-    new_clauses = []
+    
+    new_clauses = [] #initiate new clauses list
     for clause in clauses:
         if assignment in clause:
-            continue  # Clause is satisfied
-        new_clause = [lit for lit in clause if lit != -assignment]  # Remove the negated literal
+            continue  #clause is satisfied
+        new_clause = [lit for lit in clause if lit != -assignment]  #remove the negated literal
         if not new_clause:
-            return []  # Conflict: clause became empty
+            return []  #clause is empty
         new_clauses.append(new_clause)
     return new_clauses
-
-    
 
 #Main
 def main():
@@ -144,7 +132,7 @@ def main():
         for line in csvFile:
             if line[0] == 'c':
                 problemNum = line[1]
-                print(f"Problem:{problemNum}")
+                print(f"Problem:{problemNum}") #print problem number
             elif line[0] == 'p':
                 varNum = int(line[2])
                 clauseNum = int(line[3])
@@ -154,13 +142,12 @@ def main():
                 c += 1
                 if c == int(clauseNum):
                     #call dpll function
-                    if dpll(clauseNum, varNum, clauses):
+                    if dpll(clauseNum, varNum, clauses): #if dpll returns true then problem is satisfiable if false then unsatisfiable
                         print("Satisfiable")
                     else:
                         print("Unsatisfiable")
-                    c = 0
+                    c = 0 #restart clause count and clauses list
                     clauses = []
                 
-                    
 if __name__ == '__main__':
     main()
