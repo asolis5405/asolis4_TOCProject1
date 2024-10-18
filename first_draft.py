@@ -49,7 +49,7 @@ def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
                 decision_stack.append((var_to_assign, True))#assign variable with true
                 variables[var_to_assign - 1] = True
                 clauses_copy = reduce_clauses(clauses_copy, var_to_assign)#reduce clauses with new truth assignment
-
+        
 
     
 
@@ -87,48 +87,48 @@ def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
     
 
 def pure_literal(clauses: List[List[int]], variables: list) -> bool:
-    literal_count = {} #keep counts of all literals
-    changed = False #check if pure literal found
-    #gather counts for all literals
-    for clause in clauses:
-        for literal in clause:
-            if literal in literal_count:
-                literal_count[literal] += 1
-            else:
-                literal_count[literal] = 1
-
-
-    #add all pure literals occuring more than once to a pure_literals set
-    pure_literals = set()
-    for literal in literal_count:
-        if literal_count[literal] > 1 and -literal not in literal_count:
-            pure_literals.add(literal)
-    
-    
-    #remove clauses containing pure literals
-    for pure in pure_literals:
-        var = abs(pure)
-        variables[var - 1] = pure > 0  #assign the pure literal
-        clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
-        changed = True
-    
-    return changed
-    # literal_count = collections.defaultdict(int)
+    # literal_count = {} #keep counts of all literals
+    # changed = False #check if pure literal found
+    # #gather counts for all literals
     # for clause in clauses:
     #     for literal in clause:
-    #         literal_count[literal] += 1
+    #         if literal in literal_count:
+    #             literal_count[literal] += 1
+    #         else:
+    #             literal_count[literal] = 1
+
+
+    # #add all pure literals occuring more than once to a pure_literals set
+    # pure_literals = set()
+    # for literal in literal_count:
+    #     if literal_count[literal] > 1 and -literal not in literal_count:
+    #         pure_literals.add(literal)
     
-    # pure_literals = set(literal for literal in literal_count if -literal not in literal_count)
-    # if not pure_literals:
-    #     return False
     
+    # #remove clauses containing pure literals
     # for pure in pure_literals:
     #     var = abs(pure)
-    #     value = pure > 0
-    #     variables[var - 1] = value
-    #     clauses[:] = [clause for clause in clauses if pure not in clause]
+    #     variables[var - 1] = pure > 0  #assign the pure literal
+    #     clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
+    #     changed = True
     
-    # return True
+    # return changed
+    literal_count = collections.defaultdict(int)
+    for clause in clauses:
+        for literal in clause:
+            literal_count[literal] += 1
+    
+    pure_literals = set(literal for literal in literal_count if -literal not in literal_count and literal > 2)
+    if not pure_literals:
+        return False
+    
+    for pure in pure_literals:
+        var = abs(pure)
+        value = pure > 0
+        variables[var - 1] = value
+        clauses[:] = [clause for clause in clauses if pure not in clause]
+    
+    return True
 
 def reduce_clauses(clauses: List[List[int]], assignment: int) -> List[List[int]]:
     
