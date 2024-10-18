@@ -25,8 +25,8 @@ def dpll(clauses: List[List[int]], variables: list) -> bool:
 
     #select a literal and pass to recursive step 
     #if dpll returns false with assigned literal then dpll with the negative literal will be called
-    l = clauses[0][0]
-    return dpll(clauses + [[l]], variables) if dpll(clauses + [[l]], variables) else dpll(clauses + [[-l]], variables)
+    lit = clauses[0][0]
+    return dpll(clauses + [[lit]], variables) if dpll(clauses + [[lit]], variables) else dpll(clauses + [[-(lit)]], variables)
 
 
 def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
@@ -86,7 +86,7 @@ def main():
     y_unsatis= []
 
 
-    file_name = "practice_test.csv"
+    file_name = "test_cases_asolis4.csv"
     with open(file_name, mode ='r')as file:
         csvFile = csv.reader(file)
         clauses = []
@@ -95,7 +95,9 @@ def main():
         for line in csvFile:
             if line[0] == 'c':
                 problemNum = int(line[1])
-                print(f"Problem:{problemNum}") #print problem number
+                with open('output_asolis4.txt', 'a') as file:
+                    file.write(f"Problem:{problemNum}\n") #print to output file
+                #print(f"Problem:{problemNum}") #print problem number to terminal
             elif line[0] == 'p':
                 varNum = int(line[2])
                 clauseNum = int(line[3])
@@ -117,13 +119,19 @@ def main():
                     if not satisfiable:
                         x_unsatis.append(clauseNum * 2)
                         y_unsatis.append(exec_time)
-
-                    print("Satisfiable" if satisfiable else "Unsatisfiable")
+                    with open('output_asolis4.txt', 'a') as file: #print to output file
+                        file.write("Satisfiable\n" if satisfiable else "Unsatisfiable\n")
+                        file.write(f"literals:{clauseNum*2}\n")
+                        file.write(f"time: {exec_time}s\n")
+                    #print to terminal
+                    #print("Satisfiable" if satisfiable else "Unsatisfiable") 
+                    #print(f"literals:{clauseNum*2}")
+                    #print(f"time: {exec_time}s")
 
                     c = 0  #restart clause count and clauses list
                     clauses = []
                     
-    #needed only for printing x and y values
+    # #needed only for printing x and y values
     # for x in x_satis:
     #     print(x)
     # for y in y_satis:

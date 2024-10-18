@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+#This program did not end up working. I ended up rewriting the code using recursion. I was able to keep a lot of fragments from this code,
+#like the main function where I read in the csv file and most of the unit_clause_prop function and pure_literal function. 
 import collections
 import sys
 import csv
@@ -6,6 +8,7 @@ from typing import List
 import copy
 import time
 import matplotlib.pyplot as plt
+
 
 #Functions
 def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
@@ -17,8 +20,6 @@ def dpll(c: int, v: int, clauses: List[List[int]]) -> bool:
         #if clauses_copy is empty then problem is satisfiable since all clauses have been satisfied
         if not clauses_copy:
             return True
-        # if all(len(clause) == 0 for clause in clauses_copy):
-        #     return True
 
         
         if any(len(clause) == 0 for clause in clauses_copy): #if clause length == 0 then we must backtrack since it means the clause could not be satisfied
@@ -61,9 +62,6 @@ def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
             if len(c) == 1: unit_clauses.append(c[0])
         if not unit_clauses:  #if no unit clauses
             return changed
-        # unit_clauses = [c[0] for c in clauses if len(c) == 1]
-        # if not unit_clauses:
-        #     return changed
         
         changed = True #if unit clauses found
         for unit in unit_clauses:
@@ -87,48 +85,33 @@ def unit_clause_prop(clauses: List[List[int]], variables: list) -> bool:
     
 
 def pure_literal(clauses: List[List[int]], variables: list) -> bool:
-    # literal_count = {} #keep counts of all literals
-    # changed = False #check if pure literal found
-    # #gather counts for all literals
-    # for clause in clauses:
-    #     for literal in clause:
-    #         if literal in literal_count:
-    #             literal_count[literal] += 1
-    #         else:
-    #             literal_count[literal] = 1
-
-
-    # #add all pure literals occuring more than once to a pure_literals set
-    # pure_literals = set()
-    # for literal in literal_count:
-    #     if literal_count[literal] > 1 and -literal not in literal_count:
-    #         pure_literals.add(literal)
-    
-    
-    # #remove clauses containing pure literals
-    # for pure in pure_literals:
-    #     var = abs(pure)
-    #     variables[var - 1] = pure > 0  #assign the pure literal
-    #     clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
-    #     changed = True
-    
-    # return changed
-    literal_count = collections.defaultdict(int)
+    literal_count = {} #keep counts of all literals
+    changed = False #check if pure literal found
+    #gather counts for all literals
     for clause in clauses:
         for literal in clause:
-            literal_count[literal] += 1
+            if literal in literal_count:
+                literal_count[literal] += 1
+            else:
+                literal_count[literal] = 1
+
+
+    #add all pure literals occuring more than once to a pure_literals set
+    pure_literals = set()
+    for literal in literal_count:
+        if literal_count[literal] > 1 and -literal not in literal_count:
+            pure_literals.add(literal)
     
-    pure_literals = set(literal for literal in literal_count if -literal not in literal_count and literal > 2)
-    if not pure_literals:
-        return False
     
+    #remove clauses containing pure literals
     for pure in pure_literals:
         var = abs(pure)
-        value = pure > 0
-        variables[var - 1] = value
-        clauses[:] = [clause for clause in clauses if pure not in clause]
+        variables[var - 1] = pure > 0  #assign the pure literal
+        clauses[:] = [clause for clause in clauses if pure not in clause] #create new list of clauses without pure literals
+        changed = True
     
-    return True
+    return changed
+
 
 def reduce_clauses(clauses: List[List[int]], assignment: int) -> List[List[int]]:
     
@@ -150,7 +133,7 @@ def main():
     y_unsatis= []
 
 
-    file_name = "practice_test.csv"
+    file_name = "test_cases_asolis4.csv"
     with open(file_name, mode ='r')as file:
         csvFile = csv.reader(file)
         clauses = []
