@@ -1,0 +1,400 @@
+Problem:1000
+Satisfiable
+literals:18
+time: 0.0001068115234375s
+Problem:1001
+Unsatisfiable
+literals:18
+time: 6.246566772460938e-05s
+Problem:1002
+Satisfiable
+literals:18
+time: 6.556510925292969e-05s
+Problem:1003
+Satisfiable
+literals:18
+time: 0.0002148151397705078s
+Problem:1004
+Unsatisfiable
+literals:18
+time: 6.651878356933594e-05s
+Problem:1005
+Unsatisfiable
+literals:18
+time: 4.482269287109375e-05s
+Problem:1006
+Unsatisfiable
+literals:18
+time: 5.316734313964844e-05s
+Problem:1007
+Satisfiable
+literals:18
+time: 0.0001201629638671875s
+Problem:1008
+Satisfiable
+literals:18
+time: 7.677078247070312e-05s
+Problem:1009
+Satisfiable
+literals:18
+time: 0.00020241737365722656s
+Problem:1010
+Satisfiable
+literals:36
+time: 0.0001926422119140625s
+Problem:1011
+Satisfiable
+literals:36
+time: 0.0003349781036376953s
+Problem:1012
+Satisfiable
+literals:36
+time: 0.00011229515075683594s
+Problem:1013
+Unsatisfiable
+literals:36
+time: 0.00016021728515625s
+Problem:1014
+Unsatisfiable
+literals:36
+time: 0.00012159347534179688s
+Problem:1015
+Unsatisfiable
+literals:36
+time: 0.0003235340118408203s
+Problem:1016
+Unsatisfiable
+literals:36
+time: 0.00011301040649414062s
+Problem:1017
+Satisfiable
+literals:36
+time: 0.00010180473327636719s
+Problem:1018
+Satisfiable
+literals:36
+time: 0.00034427642822265625s
+Problem:1019
+Unsatisfiable
+literals:36
+time: 8.654594421386719e-05s
+Problem:1020
+Unsatisfiable
+literals:40
+time: 0.00016355514526367188s
+Problem:1021
+Satisfiable
+literals:40
+time: 0.00035881996154785156s
+Problem:1022
+Satisfiable
+literals:40
+time: 8.654594421386719e-05s
+Problem:1023
+Satisfiable
+literals:40
+time: 0.00018835067749023438s
+Problem:1024
+Satisfiable
+literals:40
+time: 0.00013256072998046875s
+Problem:1025
+Satisfiable
+literals:40
+time: 0.0003070831298828125s
+Problem:1026
+Unsatisfiable
+literals:40
+time: 0.0001773834228515625s
+Problem:1027
+Unsatisfiable
+literals:40
+time: 0.00015974044799804688s
+Problem:1028
+Unsatisfiable
+literals:40
+time: 0.0003101825714111328s
+Problem:1029
+Unsatisfiable
+literals:40
+time: 0.0001246929168701172s
+Problem:1030
+Satisfiable
+literals:60
+time: 0.0003025531768798828s
+Problem:1031
+Unsatisfiable
+literals:60
+time: 0.00026798248291015625s
+Problem:1032
+Satisfiable
+literals:60
+time: 0.0006029605865478516s
+Problem:1033
+Satisfiable
+literals:60
+time: 0.00029659271240234375s
+Problem:1034
+Unsatisfiable
+literals:60
+time: 0.00034499168395996094s
+Problem:1035
+Satisfiable
+literals:60
+time: 0.0004127025604248047s
+Problem:1036
+Unsatisfiable
+literals:60
+time: 0.0002448558807373047s
+Problem:1037
+Satisfiable
+literals:60
+time: 0.0003669261932373047s
+Problem:1038
+Unsatisfiable
+literals:60
+time: 0.00023412704467773438s
+Problem:1039
+Satisfiable
+literals:60
+time: 0.00026416778564453125s
+Problem:1040
+Unsatisfiable
+literals:64
+time: 0.00030159950256347656s
+Problem:1041
+Unsatisfiable
+literals:64
+time: 0.00034618377685546875s
+Problem:1042
+Unsatisfiable
+literals:64
+time: 0.0002243518829345703s
+Problem:1043
+Satisfiable
+literals:64
+time: 0.00039458274841308594s
+Problem:1044
+Unsatisfiable
+literals:64
+time: 0.00030732154846191406s
+Problem:1045
+Satisfiable
+literals:64
+time: 0.0002994537353515625s
+Problem:1046
+Satisfiable
+literals:64
+time: 0.00032711029052734375s
+Problem:1047
+Unsatisfiable
+literals:64
+time: 0.0002219676971435547s
+Problem:1048
+Satisfiable
+literals:64
+time: 0.00039124488830566406s
+Problem:1049
+Unsatisfiable
+literals:64
+time: 0.0002052783966064453s
+Problem:1050
+Unsatisfiable
+literals:66
+time: 0.0002818107604980469s
+Problem:1051
+Satisfiable
+literals:66
+time: 0.0005168914794921875s
+Problem:1052
+Satisfiable
+literals:66
+time: 0.0004076957702636719s
+Problem:1053
+Satisfiable
+literals:66
+time: 0.0003688335418701172s
+Problem:1054
+Unsatisfiable
+literals:66
+time: 0.0002779960632324219s
+Problem:1055
+Unsatisfiable
+literals:66
+time: 0.0004343986511230469s
+Problem:1056
+Unsatisfiable
+literals:66
+time: 0.00026869773864746094s
+Problem:1057
+Satisfiable
+literals:66
+time: 0.00039887428283691406s
+Problem:1058
+Unsatisfiable
+literals:66
+time: 0.0003254413604736328s
+Problem:1059
+Unsatisfiable
+literals:66
+time: 0.0002789497375488281s
+Problem:1060
+Satisfiable
+literals:76
+time: 0.00022101402282714844s
+Problem:1061
+Satisfiable
+literals:76
+time: 0.00040268898010253906s
+Problem:1062
+Unsatisfiable
+literals:76
+time: 0.0005230903625488281s
+Problem:1063
+Satisfiable
+literals:76
+time: 0.0003185272216796875s
+Problem:1064
+Satisfiable
+literals:76
+time: 0.00024819374084472656s
+Problem:1065
+Satisfiable
+literals:76
+time: 0.0002467632293701172s
+Problem:1066
+Unsatisfiable
+literals:76
+time: 0.0004527568817138672s
+Problem:1067
+Unsatisfiable
+literals:76
+time: 0.00032711029052734375s
+Problem:1068
+Satisfiable
+literals:76
+time: 0.0005364418029785156s
+Problem:1069
+Unsatisfiable
+literals:76
+time: 0.000370025634765625s
+Problem:1070
+Unsatisfiable
+literals:86
+time: 0.00072479248046875s
+Problem:1071
+Satisfiable
+literals:86
+time: 0.00038933753967285156s
+Problem:1072
+Satisfiable
+literals:86
+time: 0.00042176246643066406s
+Problem:1073
+Unsatisfiable
+literals:86
+time: 0.0006024837493896484s
+Problem:1074
+Unsatisfiable
+literals:86
+time: 0.00045371055603027344s
+Problem:1075
+Unsatisfiable
+literals:86
+time: 0.0003962516784667969s
+Problem:1076
+Satisfiable
+literals:86
+time: 0.00041794776916503906s
+Problem:1077
+Unsatisfiable
+literals:86
+time: 0.0003190040588378906s
+Problem:1078
+Satisfiable
+literals:86
+time: 0.00041174888610839844s
+Problem:1079
+Satisfiable
+literals:86
+time: 0.0003578662872314453s
+Problem:1080
+Unsatisfiable
+literals:90
+time: 0.00042700767517089844s
+Problem:1081
+Satisfiable
+literals:90
+time: 0.0003895759582519531s
+Problem:1082
+Unsatisfiable
+literals:90
+time: 0.00038552284240722656s
+Problem:1083
+Unsatisfiable
+literals:90
+time: 0.00046563148498535156s
+Problem:1084
+Unsatisfiable
+literals:90
+time: 0.0003979206085205078s
+Problem:1085
+Unsatisfiable
+literals:90
+time: 0.0003993511199951172s
+Problem:1086
+Satisfiable
+literals:90
+time: 0.0008022785186767578s
+Problem:1087
+Satisfiable
+literals:90
+time: 0.00041794776916503906s
+Problem:1088
+Unsatisfiable
+literals:90
+time: 0.00036072731018066406s
+Problem:1089
+Satisfiable
+literals:90
+time: 0.0003292560577392578s
+Problem:1090
+Unsatisfiable
+literals:94
+time: 0.0005326271057128906s
+Problem:1091
+Satisfiable
+literals:94
+time: 0.0010709762573242188s
+Problem:1092
+Unsatisfiable
+literals:94
+time: 0.0004658699035644531s
+Problem:1093
+Unsatisfiable
+literals:94
+time: 0.0005826950073242188s
+Problem:1094
+Unsatisfiable
+literals:94
+time: 0.00046372413635253906s
+Problem:1095
+Satisfiable
+literals:94
+time: 0.000469207763671875s
+Problem:1096
+Satisfiable
+literals:94
+time: 0.0007166862487792969s
+Problem:1097
+Satisfiable
+literals:94
+time: 0.0005228519439697266s
+Problem:1098
+Unsatisfiable
+literals:94
+time: 0.0005335807800292969s
+Problem:1099
+Satisfiable
+literals:94
+time: 0.0003509521484375s
